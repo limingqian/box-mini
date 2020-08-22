@@ -1,0 +1,52 @@
+/* pages/list/list.wxss */
+.panel {
+  display: block;
+  padding: 400rpx 30rpx 200rpx 30rpx;
+  margin-bottom: 500rpx;
+}
+
+.button {
+  display: flex;
+  margin-bottom: 10rpx;
+  justify-content: center;
+  /* 水平居中 */
+  align-items: center;
+  /* 垂直居中 */
+}
+
+.new_box {
+  margin-top: 40rpx;
+}
+
+
+.main_view {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  height: 20rpx;
+  margin-top: 50rpx;
+}
+
+.line {
+  width: 200rpx;
+  height: 2rpx;
+  background: #333333;
+  /* line-height: 60rpx; */
+}
+
+.txt {
+  position: relative;
+  margin-top: -20rpx;
+}
+
+.custom-image .van-empty__image {
+  width: 90px;
+  height: 90px;
+}
+
+.custom-image {
+  display: flex;
+  justify-content: center;
+  margin-top: 400rpx;
+}

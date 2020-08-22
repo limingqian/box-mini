@@ -1,0 +1,15 @@
+<!--miniprogram/pages/base/base.wxml-->
+<view>{{msg}}</view>
+<image class="banner" src="{{img}}"></image>
+<view wx:for="{{list}}" wx:key="index">
+	{{item.name}} {{item.age}} {{index}} {{item.id}}
+</view>
+<view wx:if="{{islogin}}"> yes</view>
+<view wx:else>no</view>
+<view hidden="{{!islogin}}">o</view>
+<view class="box" bindtap="father" data-id="123">
+	<view class="child" catchtap="child">
+	</view>
+</view>
+<button size="mini" bindtap="click">加1</button>
+<view>{{num}}</view>

@@ -1,0 +1,2 @@
+<!--pages/movie/movie.wxml-->
+<van-button type="danger">危险按钮</van-button>

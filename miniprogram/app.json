@@ -1,26 +1,56 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/userConsole/userConsole",
-    "pages/storageConsole/storageConsole",
-    "pages/databaseGuide/databaseGuide",
-    "pages/addFunction/addFunction",
-    "pages/deployFunctions/deployFunctions",
-    "pages/chooseLib/chooseLib",
-    "pages/openapi/openapi",
-    "pages/openapi/serverapi/serverapi",
-    "pages/openapi/callback/callback",
-    "pages/openapi/cloudid/cloudid",
-    "pages/im/im",
-    "pages/im/room/room"
+    "pages/list/list",
+    "pages/setting/setting",
+    "pages/base/base",
+    "pages/cloud/cloud",
+    "pages/movie/movie"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#F6F6F6",
-    "navigationBarTitleText": "云开发 QuickStart",
+    "navigationBarTitleText": "lmq的练习小程序",
     "navigationBarTextStyle": "black"
   },
-  "sitemapLocation": "sitemap.json",
-  "style": "v2"
+  "tabBar": {
+    "color": "#8a8a8a",
+    "selectedColor": "#2c2c2c",
+    "list": [
+      {
+        "pagePath": "pages/list/list",
+        "text": "库存",
+        "iconPath": "images/list.png",
+        "selectedIconPath": "images/list-active.png",
+        "selectedColor": "2c2c2c"
+      },
+      {
+        "pagePath": "pages/setting/setting",
+        "text": "设置",
+        "iconPath": "images/set.png",
+        "selectedIconPath": "images/set-active.png",
+        "selectedColor": "2c2c2c"
+      },
+      {
+        "pagePath": "pages/base/base",
+        "text": "基础",
+        "iconPath": "images/list.png",
+        "selectedIconPath": "images/list-active.png",
+        "selectedColor": "2c2c2c"
+      },
+      {
+        "pagePath": "pages/cloud/cloud",
+        "text": "加入",
+        "iconPath": "images/set.png",
+        "selectedIconPath": "images/set-active.png"
+      },
+      {
+        "pagePath": "pages/movie/movie",
+        "text": "加入",
+        "iconPath": "images/set.png",
+        "selectedIconPath": "images/set-active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
 }

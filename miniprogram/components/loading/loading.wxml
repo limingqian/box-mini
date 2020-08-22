@@ -1,0 +1,4 @@
+<!--components/loading.wxml-->
+<block wx:if="{{showLoading}}">
+	<van-loading class="loading" type="spinner" color="#1989fa" />
+</block>

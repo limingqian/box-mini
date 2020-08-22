@@ -1,0 +1,36 @@
+<!-- loading组件 -->
+<view>
+	<my-loading showLoading="{{showLoading}}"></my-loading>
+</view>
+<!-- 绑定或新建 -->
+<van-overlay show="{{showInit}}" bind:close="onClose">
+	<van-panel class="panel" title="冰箱码" use-footer-slot>
+		<van-field value="{{ box_id }}" placeholder="请输入冰箱码" />
+		<view slot="footer">
+			<van-button plain block="true" class="button" type="primary">确定</van-button>
+			<view class='main_view'>
+				<text class='line'></text>
+				<text class='txt'>或者也可以</text>
+				<text class='line'></text>
+			</view>
+			<van-button plain block="true" class="button new_box" bind:click="newBox">新建冰箱</van-button>
+		</view>
+	</van-panel>
+</van-overlay>
+<!-- 新建 -->
+<van-overlay show="{{showNew}}" bind:close="onClose">
+	<van-panel class="panel" title="新建冰箱" use-footer-slot>
+		<van-field model:value="{{ box_name }}" placeholder="请输入冰箱名" />
+		<van-field model:value="{{ box_code }}" placeholder="请输入冰箱码" />
+		<van-field class="textarea" type="textarea" model:value="{{ box_des }}" placeholder="请输入描述" autosize />
+		<view slot="footer">
+			<van-button plain block="true" class="button" type="primary" bind:click="insertBox">确定</van-button>
+			<van-button plain block="true" class="button new_box" bind:click="goBack">返回</van-button>
+		</view>
+	</van-panel>
+</van-overlay>
+<view hidden="{{hiddenEmpty}}">
+	<van-empty class="custom-image">
+		<template slot="description">内容</template>
+	</van-empty>
+</view>
