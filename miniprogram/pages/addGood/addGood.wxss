@@ -1,0 +1,5 @@
+/* miniprogram/pages/addGood/addGood.wxss */
+.button {
+  display: block;
+  margin: 20rpx 20rpx 20rpx 20rpx;
+}

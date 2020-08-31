@@ -16,7 +16,9 @@ App({
     }
 
     this.globalData = {
-      openid: ''
+      openid: '',
+      box_id: '',
+      dif_good: 0
     }
   }
 })

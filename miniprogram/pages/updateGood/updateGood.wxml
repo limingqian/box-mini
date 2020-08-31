@@ -1,0 +1,28 @@
+<!-- <van-cell-group> -->
+<van-field required label="名称" model:value="{{ name }}" placeholder="请输入物品名称" bind:change="onChange" />
+
+<van-field required label="保质期（天）" type="number" model:value="{{ saveDate }}" placeholder="请输入保质期天数" />
+<!-- </van-cell-group> -->
+<van-field label="设置提醒" type="number" model:value="{{ alertDate }}" placeholder="提前几天提醒" />
+
+<van-cell required title="选择入库时间" value="{{instockDate}}" is-link bind:click="showDate" />
+
+<van-cell required title="选择分类" value="{{currentType.value}}" is-link bind:click="showType" />
+
+<van-field model:value="{{ remark }}" label="备注" type="textarea" placeholder="请输入备注" autosize border="{{ false }}" />
+<!-- 选择时间弹窗 -->
+<van-popup show="{{ showDate }}" position="bottom" bind:close="cancelDate">
+	<van-datetime-picker type="date" value="{{ currentDate }}" bind:input="onInput" formatter="{{ formatter }}" bind:cancel="cancelDate" bind:confirm="confirmDate" />
+</van-popup>
+
+<!-- 选择分类弹窗 -->
+<van-popup show="{{ showType }}" position="bottom" bind:close="cancelType">
+	<van-picker show-toolbar title="选择分类" columns="{{typeArray}}" value="{{ currentType.name }}" bind:cancel="cancelType" bind:confirm="confirmType" />
+</van-popup>
+
+<!-- good图片 -->
+<van-uploader class="image" preview-size="300rpx" file-list="{{ fileList }}" max-count="1" bind:after-read="afterRead" bind:delete="deleteImg" />
+<!-- 提交按钮 -->
+<van-button plain block="true" loading="{{showLoadingInsert}}" class="button" type="primary" bind:click="doUpdate">确定</van-button>
+<van-button plain block="true" loading="{{showLoadingDelete}}" class="button" type="danger" bind:click="delete">删除</van-button>
+<van-dialog use-slot title="删除后不可恢复" show="{{ showDialog }}" show-cancel-button bind:confirm="doDelete"></van-dialog>

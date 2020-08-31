@@ -4,7 +4,9 @@
     "pages/setting/setting",
     "pages/base/base",
     "pages/cloud/cloud",
-    "pages/movie/movie"
+    "pages/movie/movie",
+    "pages/addGood/addGood",
+    "pages/updateGood/updateGood"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
@@ -30,25 +32,6 @@
         "iconPath": "images/set.png",
         "selectedIconPath": "images/set-active.png",
         "selectedColor": "2c2c2c"
-      },
-      {
-        "pagePath": "pages/base/base",
-        "text": "基础",
-        "iconPath": "images/list.png",
-        "selectedIconPath": "images/list-active.png",
-        "selectedColor": "2c2c2c"
-      },
-      {
-        "pagePath": "pages/cloud/cloud",
-        "text": "加入",
-        "iconPath": "images/set.png",
-        "selectedIconPath": "images/set-active.png"
-      },
-      {
-        "pagePath": "pages/movie/movie",
-        "text": "加入",
-        "iconPath": "images/set.png",
-        "selectedIconPath": "images/set-active.png"
       }
     ]
   },

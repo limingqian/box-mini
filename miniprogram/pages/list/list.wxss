@@ -50,3 +50,16 @@
   justify-content: center;
   margin-top: 400rpx;
 }
+
+.imageButton {
+  display: flex;
+  margin-top: 30rpx;
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+  justify-content: center;
+  align-items: center;
+}
+
+.tag {
+  margin-top: 10rpx;
+}

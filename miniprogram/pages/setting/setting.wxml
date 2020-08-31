@@ -1,2 +1,51 @@
-<!--pages/setting/setting.wxml-->
-<text>pages/setting/setting.wxml</text>
+<!-- 用户信息 -->
+<van-row>
+	<van-col span="8">
+		<view class="logo">
+			<open-data type="userAvatarUrl"></open-data>
+		</view>
+	</van-col>
+	<van-col span="12" offset="4">
+		<open-data class="userName" type="userNickName"></open-data>
+	</van-col>
+</van-row>
+<!-- 冰箱页面 -->
+<view class="line"></view>
+<view class="title">当前默认冰箱</view>
+<view wx:if="{{notEmpty}}">
+	<van-cell title="{{def_box}}" bind:click="changeBox" is-link />
+	<van-panel title="冰箱码" desc="{{box_des}}" status="{{box_code}}" use-footer-slot>
+		<view class="footer" slot="footer">
+			<!-- todo修改冰箱，感觉最好做在管理端 -->
+			<!-- <van-button class="modify" size="small" bind:click="update">修改</van-button>
+			<van-button size="small" type="danger" bind:click="delete">删除</van-button> -->
+		</view>
+	</van-panel>
+</view>
+<view wx:if="{{!notEmpty}}">
+	空状态
+</view>
+
+<van-divider />
+<text class="newBox" bindtap="newBox">新建冰箱</text>
+<van-divider />
+<van-divider />
+<text class="newBox" bindtap="showBind">绑定冰箱</text>
+<van-divider />
+
+<!-- 新建冰箱组件 -->
+<my-insert-box showNew="{{showNew}}" bind:success="success" bind:goBack="goBack" />
+
+<!-- 绑定冰箱 -->
+<van-overlay show="{{showBind}}">
+	<van-panel class="panel" title="冰箱码" use-footer-slot>
+		<van-field model:value="{{ box_id }}" placeholder="请输入冰箱码" />
+		<view slot="footer">
+			<van-button plain block="true" class="button" type="primary" bind:click="bindBox">确定</van-button>
+			<van-button plain block="true" class="button" type="danger" bind:click="closeBind">取消</van-button>
+		</view>
+	</van-panel>
+</van-overlay>
+
+<!-- 选择冰箱 -->
+<van-action-sheet show="{{ showBox }}" actions="{{ actions }}" cancel-text="取消" bind:cancel="onClose" bind:select="onSelect" />

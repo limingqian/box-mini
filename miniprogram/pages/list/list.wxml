@@ -1,13 +1,9 @@
-<!-- loading组件 -->
-<view>
-	<my-loading showLoading="{{showLoading}}"></my-loading>
-</view>
-<!-- 绑定或新建 -->
-<van-overlay show="{{showInit}}" bind:close="onClose">
+<!-- 绑定或新建冰箱 -->
+<van-overlay show="{{showInit}}">
 	<van-panel class="panel" title="冰箱码" use-footer-slot>
-		<van-field value="{{ box_id }}" placeholder="请输入冰箱码" />
+		<van-field model:value="{{ box_id }}" placeholder="请输入冰箱码" />
 		<view slot="footer">
-			<van-button plain block="true" class="button" type="primary">确定</van-button>
+			<van-button plain block="true" class="button" type="primary" bind:click="bindBox">确定</van-button>
 			<view class='main_view'>
 				<text class='line'></text>
 				<text class='txt'>或者也可以</text>
@@ -17,20 +13,71 @@
 		</view>
 	</van-panel>
 </van-overlay>
-<!-- 新建 -->
-<van-overlay show="{{showNew}}" bind:close="onClose">
-	<van-panel class="panel" title="新建冰箱" use-footer-slot>
-		<van-field model:value="{{ box_name }}" placeholder="请输入冰箱名" />
-		<van-field model:value="{{ box_code }}" placeholder="请输入冰箱码" />
-		<van-field class="textarea" type="textarea" model:value="{{ box_des }}" placeholder="请输入描述" autosize />
+<!-- 新建冰箱组件 -->
+<my-insert-box showNew="{{showNew}}" bind:success="success" bind:goBack="goBack" />
+
+<!-- 顶部工具栏 -->
+<van-row>
+	<van-col span="3">
+		<van-image class="imageButton" width="40rpx" height="40rpx" bindtap="insert" src="/images/insert.png" />
+	</van-col>
+	<van-col span="18">
+		<van-search value="{{ value }}" placeholder="请输入搜索关键词" bind:search="search" />
+	</van-col>
+	<!-- <van-col span="3">
+			<van-image class="imageButton" width="40rpx" height="40rpx" src="/images/select.png" />
+		</van-col> -->
+</van-row>
+<!-- good列表 -->
+<view wx:if="{{showList}}">
+	<van-tabs active="{{ active }}" bind:click="clickTab">
+		<view wx:for="{{typeArray}}" wx:key="_id">
+			<van-tab title="{{item.name}}" name="{{item.name}}">
+				<view wx:for="{{list}}" wx:key="index">
+					<van-card desc="{{item.remark}}" title="{{item.name}}" thumb="{{item.fileID}}" data-good="{{item}}" bindlongtap="delete" bindtouchstart="bindTouchStart" bindtouchend="bindTouchEnd" bindtap="clickGood">
+						<view slot="price">入库日期:{{item.in_stock}}</view>
+						<view slot="price">剩余天数:{{item.save_day}}天</view>
+						<view slot="tags">
+							<van-row>
+								<van-col offset="12" span="6">
+									<van-tag type="primary">{{item.type_tag}}</van-tag>
+								</van-col>
+								<van-col span="6">
+									<van-tag class="tag" type="danger">{{item.tag}}</van-tag>
+								</van-col>
+							</van-row>
+						</view>
+					</van-card>
+				</view>
+				<view wx:if="{{emptyList}}">
+					<van-empty class="custom-image" image="https://img.yzcdn.cn/vant/custom-empty-image.png" description="没有这种东西" />
+				</view>
+			</van-tab>
+		</view>
+	</van-tabs>
+</view>
+
+<view wx:if="{{!showList}}">
+	<!-- 不生效，已经提了issue -->
+	<!-- <van-empty class="custom-image">
+		<template slot="description">内容</template>
+	</van-empty> -->
+	<van-empty class="custom-image" image="https://img.yzcdn.cn/vant/custom-empty-image.png" description="冰箱里空空如也，请点击左上角创建" />
+</view>
+<!-- loading组件 -->
+<view>
+	<my-loading showLoading="{{showLoading}}"></my-loading>
+</view>
+
+<!-- 新增good -->
+<van-overlay show="{{showInsertGood}}">
+	<van-panel class="panel" title="冰箱码" use-footer-slot>
+		<van-field model:value="{{ box_id }}" placeholder="请输入冰箱码" />
 		<view slot="footer">
-			<van-button plain block="true" class="button" type="primary" bind:click="insertBox">确定</van-button>
-			<van-button plain block="true" class="button new_box" bind:click="goBack">返回</van-button>
+			<van-button plain block="true" class="button" type="primary" bind:click="doInsert">确定</van-button>
+			<van-button plain block="true" class="button" type="danger" bind:click="closeInsert">取消</van-button>
 		</view>
 	</van-panel>
 </van-overlay>
-<view hidden="{{hiddenEmpty}}">
-	<van-empty class="custom-image">
-		<template slot="description">内容</template>
-	</van-empty>
-</view>
+
+<van-dialog use-slot title="删除后不可恢复" asyncClose="true" show="{{ showDelete }}" show-cancel-button bind:cancel="cancel" bind:confirm="doDelete"></van-dialog>

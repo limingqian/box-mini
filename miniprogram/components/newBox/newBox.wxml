@@ -1,0 +1,11 @@
+<van-overlay show="{{showNew}}">
+	<van-panel class="panel" title="新建冰箱" use-footer-slot>
+		<van-field model:value="{{ box_name }}" error-message="{{ errorMessage }}" placeholder="请输入冰箱名" />
+		<van-field model:value="{{ box_code }}" error-message="{{ errorMessage }}" placeholder="请输入冰箱码" />
+		<van-field type="textarea" model:value="{{ box_des }}" placeholder="请输入描述" autosize />
+		<view slot="footer">
+			<van-button plain block="true" loading='{{loadingButton}}' class="button" type="primary" bind:click="insertBox">确定</van-button>
+			<van-button plain block="true" class="button new_box" bind:click="goBack">返回</van-button>
+		</view>
+	</van-panel>
+</van-overlay>

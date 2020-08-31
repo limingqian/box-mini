@@ -1,18 +1,29 @@
 // pages/list/list.js
+import dayjs from 'dayjs'
 Page({
   /**
    * 页面的初始数据
    */
   data: {
+    _id: '',
     box_id: '',
     showInit: false,
     showNew: false,
     showLoading: false,
-    hiddenEmpty: true,
+    showList: false,
+    emptyList: false,
+    showDelete: false,
+    active: "全部",
     box_name: '',
     box_code: '',
-    box_des: ''
+    box_des: '',
+    errorMessage: '',
+    typeArray: [],
+    typeMap: {},
+    list: [],
+    originList: []
   },
+  // 新建冰箱
   newBox() {
     this.setData({
       showInit: false
@@ -21,46 +32,133 @@ Page({
       showNew: true
     })
   },
-  async listGood() {
-    let goods = []
-    if (goods.length > 0) {
 
+  // 绑定冰箱
+  async bindBox() {
+    // 调用云函数绑定冰箱
+    let box = await wx.cloud.callFunction({
+      name: "bindBox",
+      data: {
+        openid: getApp().globalData.openid,
+        box_id: this.data.box_id
+      }
+    })
+
+    if (box.result) {
+      wx.showToast({
+        title: '冰箱绑定成功',
+        icon: 'none',
+        duration: 2000
+      })
+      this.setData({
+        showInit: false
+      })
+      wx.showTabBar()
+      // 获取物品列表
+      await this.listGood({
+        _id: box.result
+      })
+    } else {
+      wx.showToast({
+        title: '冰箱绑定失败',
+        icon: 'none',
+        duration: 2000
+      })
+      return
+    }
+  },
+
+  // 获取goods列表
+  async listGood(params) {
+    let now = dayjs().format('YYYY-MM-DD')
+    let nowtimestamp = dayjs(now).unix()
+
+    let {
+      _id, // 冰箱_id
+      keyWord
+    } = params
+    this.setData({
+      box_id: _id
+    })
+
+    // 获取goods列表
+    let goodArray = await wx.cloud.callFunction({
+      name: "listGood",
+      data: {
+        box_id: _id
+      }
+    })
+
+    let list = goodArray.result.list
+    if (list.length > 0) {
+      // 设置分类列表
+      let typeArray = goodArray.result.typeArray
+      // 构建map
+      let map = {}
+      for (let i = 0; i < typeArray.length; i++) {
+        map[typeArray[i]._id] = typeArray[i].name
+      }
+      typeArray.unshift({
+        _id: '1',
+        name: '全部'
+      })
+
+      list = list.map(temp => {
+        // 设置提醒标签
+        let in_stock_timestamp = dayjs(temp.in_stock).unix()
+        let pass_day = (nowtimestamp - in_stock_timestamp) / (60 * 60 * 24)
+        temp.save_day = temp.save_date - pass_day
+
+        if (!temp.alert_date) {
+          temp.tag = "未设提醒" // 未设提醒
+        } else if (pass_day > temp.save_date) {
+          temp.tag = "已过期" // 已过期
+        } else if ((temp.save_date - pass_day) >= temp.alert_date) {
+          // 正常食用
+          temp.tag = "正常食用"
+        } else {
+          temp.tag = "即将过期"
+          temp.order = temp.save_date - pass_day // 从小到大排列
+          // 即将过期
+        }
+        // 设置默认图片
+        if (temp.fileID === "") {
+          temp.fileID = "/images/food.png"
+        }
+        // 设置分类标签
+        temp.type_tag = map[temp.type_id]
+        return temp
+      })
+
+      list.sort((a, b) => {
+        return a.order - b.order
+      })
+
+      this.setData({
+        typeArray,
+        typeMap: map,
+        list,
+        originList: list,
+        showList: true
+      })
     } else {
       this.setData({
-        hiddenEmpty: false
+        showList: false
       })
     }
   },
-
-  async insertBox() {
-    // 创建冰箱
+  // 新增冰箱组件成功回调
+  async success(event) {
     this.setData({
-      showNew: false,
-      showLoading: true
+      showNew: false
     })
-    // let box = await wx.cloud.callFunction({
-    //   name: "insertBox",
-    //   data: {
-    //     openid: getApp().globalData.openid,
-    //     box_name: this.data.box_name,
-    //     box_code: this.data.box_code,
-    //     box_des: this.data.box_des,
-    //   }
-    // })
-    let box = 1
-    this.setData({
-      showLoading: false
+    wx.showTabBar()
+    // 获取物品列表
+    await this.listGood({
+      _id: event.detail._id
     })
-    // TODO 没有遇到失败的情况Em
-    if (box) {
-      wx.showTabBar()
-      // 获取物品列表
-      await this.listGood()
-    } else {
-      // 新增失败
-    }
   },
-
+  // 新增冰箱组件返回回调
   goBack() {
     this.setData({
       showNew: false
@@ -68,6 +166,136 @@ Page({
     this.setData({
       showInit: true
     })
+  },
+
+  // 搜索物品
+  async search(event) {
+    // 定位到全部
+    this.setData({
+      active: "全部"
+    })
+    if (!event.detail) {
+      // 重新获取数据
+      await this.listGood({
+        _id: this.data.box_id
+      })
+    } else {
+      let originList = this.data.originList
+      originList = originList.filter(temp => {
+        let reg = new RegExp(event.detail, "g")
+        return temp.name.match(reg) ? 1 : 0
+      })
+      this.setData({
+        list: originList
+      })
+      if (originList.length === 0) {
+        this.setData({
+          showList: true
+        })
+      }
+    }
+  },
+
+  // 点击标签
+  clickTab(event) {
+    let originList = this.data.originList
+    if (event.detail.title === "全部") {
+      this.setData({
+        list: this.data.originList
+      })
+    } else {
+      let typeMap = this.data.typeMap
+      // 得到type_id
+      let type_id = ""
+      for (const key in typeMap) {
+        if (typeMap[key] === event.detail.title) {
+          type_id = key
+          break;
+        }
+      }
+
+      this.setData({
+        list: originList.filter(temp => {
+          return temp.type_id === type_id
+        })
+      })
+    }
+    if (this.data.list.length === 0) {
+      this.setData({
+        emptyList: true
+      })
+    } else {
+      this.setData({
+        emptyList: false
+      })
+    }
+  },
+
+  // 显示新增good弹窗
+  insert() {
+    wx.navigateTo({
+      url: '/pages/addGood/addGood?box_id=' + this.data.box_id
+    })
+  },
+
+  delete() {
+    this.setData({
+      showDelete: true
+    })
+  },
+
+  async doDelete() {
+    this.setData({
+      showLoadingDelete: true
+    })
+
+    await wx.cloud.callFunction({
+      name: "deleteGood",
+      data: {
+        _id: this.data._id
+      }
+    })
+    let list = this.data.list
+    for (let i = 0; i < list.length; i++) {
+      if (list[i]._id === this.data._id) {
+        list.splice(i, 1)
+      }
+    }
+
+    let originList = this.data.originList
+    for (let i = 0; i < originList.length; i++) {
+      if (originList[i]._id === this.data._id) {
+        originList.splice(i, 1)
+      }
+    }
+
+    wx.showToast({
+      title: '删除成功',
+      icon: 'none',
+      duration: 2000,
+      success: () => {
+        this.setData({
+          showDelete: false,
+          list,
+          originList, 
+          active: "全部"
+        })
+
+      }
+    })
+  },
+
+  cancel() {
+    this.setData({
+      showDelete: false
+    })
+  },
+
+  bindTouchStart: function (e) {
+    this.startTime = e.timeStamp;
+  },
+  bindTouchEnd: function (e) {
+    this.endTime = e.timeStamp;
   },
 
   /**
@@ -93,19 +321,47 @@ Page({
     let result = await wx.cloud.callFunction({
       name: "getBoxByUserId",
       data: {
-        // 先测试找不到的情况
-        openid: openid + 1
+        openid
       }
     })
     this.setData({
       showLoading: false
     })
-    if (result.result.data.length > 0) {
-      // 选择冰箱
+
+    let boxList = result.result.data
+    if (boxList.length > 0) {
+      let defBox = boxList.filter(temp => {
+        return temp.def === 1
+      })
+      // 全局的box
+      getApp().globalData.box_id = defBox[0].box_id
+      // 当前的box
+      this.setData({
+        box_id: defBox[0].box_id
+      })
+
+      wx.showTabBar()
+      if (defBox.length > 0) {
+        await this.listGood({
+          _id: defBox[0].box_id
+        })
+      }
     } else {
       // 新建冰箱 弹框
       this.setData({
         showInit: true
+      })
+    }
+  },
+  // 跳转到详情页
+  clickGood(event) {
+    if (this.endTime - this.startTime < 350) {
+      wx.navigateTo({
+        url: '/pages/updateGood/updateGood?good=' + JSON.stringify(event.currentTarget.dataset.good)
+      })
+    } else {
+      this.setData({
+        _id: event.currentTarget.dataset.good._id
       })
     }
   },
@@ -115,13 +371,35 @@ Page({
    */
   onReady: function () {
 
+
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
-
+  onShow: async function () {
+    // good有改变
+    if (getApp().globalData.dif_good === 1) {
+      await this.listGood({
+        _id: getApp().globalData.box_id
+      })
+      getApp().globalData.dif_good = 0
+      this.setData({
+        active: "全部"
+      })
+      return
+    }
+    // box_id 不一样 刷新list
+    if (this.data.box_id) {
+      if (this.data.box_id != getApp().globalData.box_id) {
+        this.setData({
+          box_id: getApp().globalData.box_id
+        })
+        await this.listGood({
+          _id: getApp().globalData.box_id
+        })
+      }
+    }
   },
 
   /**

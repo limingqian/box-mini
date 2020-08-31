@@ -1,0 +1,19 @@
+/* components/newBox/newBox.wxss */
+.panel {
+  display: block;
+  padding: 400rpx 30rpx 200rpx 30rpx;
+  margin-bottom: 500rpx;
+}
+
+.button {
+  display: flex;
+  margin-bottom: 10rpx;
+  justify-content: center;
+  /* 水平居中 */
+  align-items: center;
+  /* 垂直居中 */
+}
+
+.new_box {
+  margin-top: 40rpx;
+}

@@ -1,1 +1,61 @@
 /* pages/setting/setting.wxss */
+.line {
+  margin-top: 40rpx;
+  margin-bottom: 20rpx;
+  width: 100%;
+  height: 10rpx;
+  background: rgb(228, 227, 227);
+}
+
+.logo {
+  width: 160rpx;
+  margin-top: 40rpx;
+  margin-left: 40rpx;
+}
+
+.userName{
+  display: flex;
+  font-size: 35rpx;
+  margin-top: 100rpx;
+  width: 350rpx;
+}
+
+.title{
+  margin-left: 20rpx;
+  margin-bottom: 20rpx;
+  font-size: 25rpx;
+  color: rgba(41, 39, 39, 0.5);
+}
+
+.newBox{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer{
+  margin-left: 400rpx;
+}
+
+.modify{
+  margin-right: 20rpx;
+}
+
+.panel {
+  display: block;
+  padding: 400rpx 30rpx 200rpx 30rpx;
+  margin-bottom: 500rpx;
+}
+
+.button {
+  display: flex;
+  margin-bottom: 10rpx;
+  justify-content: center;
+  /* 水平居中 */
+  align-items: center;
+  /* 垂直居中 */
+}
+
+.new_box {
+  margin-top: 40rpx;
+}

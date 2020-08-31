@@ -1,15 +1,14 @@
 {
-  "name": "miniprogram",
+  "name": "listGood",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "lmq",
+  "author": "",
   "license": "ISC",
   "dependencies": {
-    "@vant/weapp": "^1.4.4",
-    "dayjs": "^1.8.34"
+    "wx-server-sdk": "~2.2.0"
   }
 }
