@@ -9,6 +9,9 @@ var $ = db.command.aggregate
 exports.main = async (event, context) => {
   // 组合 mergeObjects 应用相等匹配
   return await db.collection('user_box').aggregate()
+  .match({
+    _openid: event.openid
+  })
   .lookup({
     from: 'box',
     localField: 'box_id',
