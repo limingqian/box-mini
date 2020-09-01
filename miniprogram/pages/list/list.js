@@ -420,6 +420,7 @@ Page({
     await this.listGood({
       _id: getApp().globalData.box_id
     })
+    wx.stopPullDownRefresh();
   },
 
   /**
