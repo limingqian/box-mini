@@ -1,4 +1,5 @@
 {
+  "enablePullDownRefresh": true,
   "usingComponents": {
     "van-popup": "@vant/weapp/popup/index",
     "van-field": "@vant/weapp/field/index",

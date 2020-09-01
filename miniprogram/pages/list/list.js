@@ -75,11 +75,7 @@ Page({
 
     let {
       _id, // 冰箱_id
-      keyWord
     } = params
-    this.setData({
-      box_id: _id
-    })
 
     // 获取goods列表
     let goodArray = await wx.cloud.callFunction({
@@ -135,6 +131,7 @@ Page({
       })
 
       this.setData({
+        box_id: _id,
         typeArray,
         typeMap: map,
         list,
@@ -277,7 +274,7 @@ Page({
         this.setData({
           showDelete: false,
           list,
-          originList, 
+          originList,
           active: "全部"
         })
 
@@ -419,8 +416,10 @@ Page({
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
-
+  onPullDownRefresh: async function () {
+    await this.listGood({
+      _id: getApp().globalData.box_id
+    })
   },
 
   /**

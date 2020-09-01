@@ -15,20 +15,25 @@ exports.main = async (event, context) => {
     let sameBox = await db.collection('user_box').where({
       _openid: event.openid,
       box_id: box.data[0]._id
-    }).get({})
+    }).get()
+
+    // 绑定过了
     if (sameBox.data.length > 0) {
       return false
     }
     let userBox = await db.collection('user_box').where({
       _openid: event.openid,
       def: 1
-    }).get({})
-
+    }).get()
+    let def = 1
+    if(userBox.data.length > 0){
+      def = 0
+    }
     await db.collection('user_box').add({
       data: {
         _openid: event.openid,
         box_id: box.data[0]._id,
-        def: !userBox.data.length ? 1 : 0
+        def
       }
     })
     return box.data[0]._id
