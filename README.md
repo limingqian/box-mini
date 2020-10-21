@@ -6,5 +6,4 @@
 - 分享冰箱码给其他人，绑定后可共同管理同一冰箱
 
 ## 欢迎体验
-
-![冰箱管理程序](https://cdn.img.wenhairu.com/images/2020/10/21/C3o3I.jpg)
+![RUNOOB 图标](http://static.runoob.com/images/runoob-logo.png "RUNOOB")
