@@ -11,7 +11,6 @@ exports.main = async (event, context) => {
     box_code: event.box_id
   }).get()
   if (box.data.length > 0) {
-    // 如果没有默认冰箱则当前为默认
     let sameBox = await db.collection('user_box').where({
       _openid: event.openid,
       box_id: box.data[0]._id
@@ -21,14 +20,18 @@ exports.main = async (event, context) => {
     if (sameBox.data.length > 0) {
       return false
     }
+
+    // 如果没有默认冰箱则当前为默认
     let userBox = await db.collection('user_box').where({
       _openid: event.openid,
       def: 1
     }).get()
+
     let def = 1
-    if(userBox.data.length > 0){
+    if (userBox.data.length > 0) {
       def = 0
     }
+
     await db.collection('user_box').add({
       data: {
         _openid: event.openid,

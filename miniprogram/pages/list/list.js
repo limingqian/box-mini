@@ -21,7 +21,7 @@ Page({
     typeArray: [],
     typeMap: {},
     list: [],
-    originList: []
+    originList: [] //因为切换tab时候要改原数组
   },
   // 新建冰箱
   newBox() {

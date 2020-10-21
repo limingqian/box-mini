@@ -96,6 +96,7 @@ Page({
     await wx.cloud.callFunction({
       name: "updateDefBox",
       data: {
+        openid: getApp().globalData.openid,
         user_box_id: event.detail.user_box_id
       }
     })
