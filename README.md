@@ -7,4 +7,4 @@
 
 ## 欢迎体验
 
-![alt 冰箱管理程序](https://img.wenhairu.com/image/C3o3I)
+![冰箱管理程序](https://cdn.img.wenhairu.com/images/2020/10/21/C3o3I.jpg)
