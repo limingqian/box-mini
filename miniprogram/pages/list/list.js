@@ -129,7 +129,7 @@ Page({
       list.sort((a, b) => {
         return a.order - b.order
       })
-
+      
       this.setData({
         box_id: _id,
         typeArray,
@@ -420,6 +420,7 @@ Page({
     await this.listGood({
       _id: getApp().globalData.box_id
     })
+    // 停止刷新
     wx.stopPullDownRefresh();
   },
 

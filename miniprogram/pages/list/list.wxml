@@ -3,6 +3,7 @@
 	<van-panel class="panel" title="冰箱码" use-footer-slot>
 		<van-field model:value="{{ box_id }}" placeholder="请输入冰箱码" />
 		<view slot="footer">
+			<!-- 按钮默认为行内元素 -->
 			<van-button plain block="true" class="button" type="primary" bind:click="bindBox">确定</van-button>
 			<view class='main_view'>
 				<text class='line'></text>

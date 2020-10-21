@@ -2,9 +2,6 @@
   "pages": [
     "pages/list/list",
     "pages/setting/setting",
-    "pages/base/base",
-    "pages/cloud/cloud",
-    "pages/movie/movie",
     "pages/addGood/addGood",
     "pages/updateGood/updateGood"
   ],
@@ -12,7 +9,7 @@
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#F6F6F6",
-    "navigationBarTitleText": "lmq的练习小程序",
+    "navigationBarTitleText": "冰箱管理小程序",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {

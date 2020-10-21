@@ -50,7 +50,7 @@ Page({
         return {
           box_id: temp.box_id,
           name: temp.name,
-          box_code: temp.name,
+          box_code: temp.box_code,
           box_des: temp.box_des,
           user_box_id: temp._id,
         }
@@ -91,6 +91,7 @@ Page({
       box_code: event.detail.box_code,
       box_des: event.detail.box_des,
     })
+
     // 修改默认冰箱
     await wx.cloud.callFunction({
       name: "updateDefBox",
@@ -162,7 +163,7 @@ Page({
         return {
           box_id: temp.box_id,
           name: temp.name,
-          box_code: temp.name,
+          box_code: temp.box_code,
           box_des: temp.box_des,
           user_box_id: temp._id,
         }
